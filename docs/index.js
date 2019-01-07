@@ -935,11 +935,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//自分
 		var _this = this;
 		
-		//プレイヤー
-		var _player = this.player_mc;
-		
-		//弾
-		var _ball = this.ball_mc;
 		//弾発射中判定用
 		var ball_bool = false;
 		//弾速度
@@ -969,20 +964,20 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//リセット
 		this.reset_func = function() {
 			//クリア判定オフ
-			_this.complete_bool = false;
+			this.complete_bool = false;
 			//弾速度
 			ball_num  = Number( _root.in_time_array[ _root.active_obj.level ] ) * 2;
 			//開始
-			_this.start_func();
+			this.start_func();
 			//ブロック作成
 			for ( var ix = 0;  ix < 7; ix++ ) {
-				for ( var iy = 0; iy < 4; iy++ ) {
+				for ( var iy = 0; iy < 3; iy++ ) {
 					//敵個別配置
 					var enemy_mc = new lib.enemy_y_x_mc();
 					enemy_mc.x = ( ix * 40 ) + 40;
 					enemy_mc.y = ( iy * 40 ) + 30;
 					enemy_mc.name = "enemy_" + iy + "_" + ix + "_mc";
-					_enemy_set.addChild( enemy_mc );
+					this.enemy_set_mc.addChild( enemy_mc );
 					//ランダム計算
 					var y_num = Number( enemy_mc.name.split( "_" )[ 1 ] ) + 1;
 					var x_num = Number( enemy_mc.name.split( "_" )[ 2 ] ) + 1;
@@ -994,7 +989,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					//タイマー用ID
 					enemy_mc.timer_id = 0;
 					//毎秒処理追加※敵個別
-					enemy_mc.lis_obj = enemy_mc.addEventListener( "tick", _this.enemy_tick_func );
+					enemy_mc.lis_obj = enemy_mc.on( "tick", this.enemy_tick_func, enemy_mc );
 					//敵弾個別配置
 					var ballet_mc = new lib.ballet_mc();
 					ballet_mc.x = 0;
@@ -1005,20 +1000,20 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					//敵弾発射中判定用
 					ballet_mc.ballet_bool = false;
 					//毎秒処理追加※敵弾個別
-					ballet_mc.lis_obj = ballet_mc.addEventListener( "tick", _this.ballet_tick_func );
+					ballet_mc.lis_obj = ballet_mc.on( "tick", this.ballet_tick_func, ballet_mc );
 				};
 			};
 			//毎秒処理追加※全体
-			lis_obj = createjs.Ticker.addEventListener( "tick", _this.tick_func );
+			lis_obj = createjs.Ticker.on( "tick", this.tick_func, this );
 		};
 		
 		//開始
 		this.start_func = function() {
 			//プレイヤー位置
-			_player.x = 160;
+			this.player_mc.x = 160;
 			//ボール位置
-			_ball.x = 160;
-			_ball.y = 252;
+			this.ball_mc.x = 160;
+			this.ball_mc.y = 252;
 		};
 		
 		//停止
@@ -1031,7 +1026,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_enemy_set.removeChild( _enemy );
 			};
 			//毎秒処理削除※全体
-			createjs.Ticker.removeEventListener( "tick", lis_obj );
+			createjs.Ticker.off( "tick", lis_obj );
 			//ゲーム終了
 			_root.game_stop_func();
 		};
@@ -1040,11 +1035,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.restart_func = function() {
 			//ライフがあれば再開
 			if ( _root.active_obj.life >= 1 ) {
-				_this.start_func();
+				this.start_func();
 			};
 			//ライフがなければ終了
 			if ( _root.active_obj.life <= 0 ) {
-				_this.stop_func();
+				this.stop_func();
 			};
 		};
 		
@@ -1056,29 +1051,28 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 			//弾移動
 			if ( ball_bool == true ) {
-				_ball.y -= ball_num;
+				this.ball_mc.y -= ball_num;
 			};
 			if ( ball_bool == false ) {
-				_ball.x = _player.x;
-				_ball.y = _player.y + 2;
+				this.ball_mc.x = this.player_mc.x;
+				this.ball_mc.y = this.player_mc.y + 2;
 			};
 			//上の壁に当たる
-			if ( _ball.y <= 0 ) {
+			if ( this.ball_mc.y <= 0 ) {
 				//判定オフ
 				ball_bool = false;
 			};
 			//弾が敵全体に当たる
-			var target_mc = _this.getChildByName( "enemy_set_mc" );
-			var _point = _ball.localToLocal( 0, 0, target_mc );
+			var _point = this.ball_mc.localToLocal( 0, 0, this.enemy_set_mc );
 			//衝突判定※敵全体
-			if ( target_mc.hitTest( _point.x, _point.y ) ) {
+			if ( this.enemy_set_mc.hitTest( _point.x, _point.y ) ) {
 				//破棄
 				delete _point;
 				//敵全員チェック
-				for (var _mc of target_mc.children ) {
-					console.log(_mc);
+				for ( var i = 0; i < this.enemy_set_mc.numChildren; i++ ) {
+					console.log( i );
 					//弾が敵個別に当たる
-					var _point = _ball.localToLocal( 0, 0, _mc );
+					var _point = this.ball_mc.localToLocal( 0, 0, _mc );
 					//衝突判定※敵個別
 					if ( _mc.hitTest( _point.x, _point.y ) ) {
 						//爆発
@@ -1763,7 +1757,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1546864041443", id:"spacer"}
+		{src:"./images/spacer.png", id:"spacer"}
 	],
 	preloads: []
 };
