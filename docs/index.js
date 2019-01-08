@@ -940,9 +940,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//弾速度
 		var ball_num = 0;
 		
-		//敵全体
-		var _enemy_set = this.enemy_set_mc;
-		
 		//敵移動距離
 		var move_x_num = 4;
 		var move_y_num = 40;
@@ -1019,11 +1016,15 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//停止
 		this.stop_func = function() {
 			//敵全員削除
-			for ( var _enemy of _enemy_set.children ) {
-				//タイマークリア
-				clearInterval( _enemy.timer_id );
-				//削除
-				_enemy_set.removeChild( _enemy );
+			for ( var i in this.enemy_set_mc.children ) {
+				var _str = this.enemy_set_mc.children[ i ].name;
+				if ( _str != null ) {
+					var _mc = this.enemy_set_mc.getChildByName( _str );
+					//タイマークリア
+					clearInterval( _mc.timer_id );
+					//削除
+					this.enemy_set_mc.removeChild( _mc );
+				};
 			};
 			//毎秒処理削除※全体
 			createjs.Ticker.off( "tick", lis_obj );
@@ -1069,68 +1070,73 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//破棄
 				delete _point;
 				//敵全員チェック
-				for ( var i = 0; i < this.enemy_set_mc.numChildren; i++ ) {
-					//var _mc = this.enemy_set_mc.getChildAt( i );
-					//var _name = _mc.getChildByName( this.enemy_set_mc[ i ] );
-					console.log( this.enemy_set_mc.getChildAt[ i ] );
-					//弾が敵個別に当たる
-					var _point = this.ball_mc.localToLocal( 0, 0, _mc );
-					//衝突判定※敵個別
-					if ( _mc.hitTest( _point.x, _point.y ) ) {
-						//爆発
-						_mc.gotoAndStop( 2 );
-						//タイマーセット
-						createjs.Tween.get( _mc ).wait( 500 ).call( function() {
-							//タイマークリア
-							clearInterval( this.timer_id );
-							//弾に当たった敵を削除
-							_enemy_set.removeChild( this );
-						}, [], _mc );
-						//得点加算
-						_this.score_func( "+" );
-						//判定オフ
-						ball_bool = false;
+				for ( var i in this.enemy_set_mc.children ) {
+					var _str = this.enemy_set_mc.children[ i ].name;
+					if ( _str != null ) {
+						var _mc = this.enemy_set_mc.getChildByName( _str );
+						//弾が敵個別に当たる
+						var _point = this.ball_mc.localToLocal( 0, 0, _mc );
+						//衝突判定※敵個別
+						if ( _mc.hitTest( _point.x, _point.y ) ) {
+							//爆発
+							_mc.gotoAndStop( 2 );
+							//タイマーセット
+							createjs.Tween.get( _mc ).wait( 500 ).call( function() {
+								//タイマークリア
+								clearInterval( this.timer_id );
+								//弾に当たった敵を削除
+								this.parent.removeChild( this );
+							}, [], _mc );
+							//得点加算
+							this.score_func( "+" );
+							//判定オフ
+							ball_bool = false;
+						};
 					};
 				};
 				//破棄
-				delete _point;
 				delete _mc;
+				delete _point;
 			};
 			//プレイヤーが敵の弾に当たる
 			//※思考中
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
-			for ( var _enemy of _enemy_set.children ) {
-				if ( _enemy.y >= 240 ) {
-					//ライフ消滅
-					_root.active_obj.life = 0;
-					_root.life_mc.life_1_mc.visible = false;
-					_root.life_mc.life_2_mc.visible = false;
-					_root.life_mc.life_3_mc.visible = false;
-					//一時停止
-					pause_bool = true;
-					//エラー表示
-					_this.error_func();
+			for ( var i in this.enemy_set_mc.children ) {
+				var _str = this.enemy_set_mc.children[ i ].name;
+				if ( _str != null ) {
+					var _mc = this.enemy_set_mc.getChildByName( _str );
+					if ( _mc.y >= 240 ) {
+						//ライフ消滅
+						_root.active_obj.life = 0;
+						_root.life_mc.life_1_mc.visible = false;
+						_root.life_mc.life_2_mc.visible = false;
+						_root.life_mc.life_3_mc.visible = false;
+						//一時停止
+						pause_bool = true;
+						//エラー表示
+						this.error_func();
+					};
 				};
 			};
 			//破棄
-			delete _point;
-			delete _enemy;
+			delete _mc;
 			//敵がなくなればゲームクリア
-			if ( _enemy_set.numChildren == 0 ) {
+			if ( this.enemy_set_mc.numChildren == 0 ) {
 				//クリア判定オン
-				_this.complete_bool = true;
+				this.complete_bool = true;
 				//停止
-				_this.stop_func();
+				this.stop_func();
 			};
 			//敵が残り1機になったら速度アップ
 			if ( last_bool == false ) {
-				if ( _enemy_set.numChildren == 1 ) {
+				if ( this.enemy_set_mc.numChildren == 1 ) {
 					last_bool = true;
-					var _enemy = _enemy_set.getChildAt( 0 );
-					clearInterval( _enemy.timer_id );
-					_enemy.interval_num = 10;
-					_enemy.lis_obj = _enemy.addEventListener( "tick", _this.enemy_tick_func );
+					var _mc = this.enemy_set_mc.getChildAt( 0 );
+					clearInterval( _mc.timer_id );
+					_mc.interval_num = 10;
+					_mc.lis_obj = _mc.addEventListener( "tick", this.enemy_tick_func );
+					delete _mc;
 				};
 			};
 		};
@@ -1151,23 +1157,27 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				} else if ( _mc.currentFrame == 1 ) {
 					_mc.gotoAndStop( 0 );
 				};
+				//縦移動判定用
+				var _bool = false;
 				//横移動
 				_mc.x += move_x_num;
 				//左端
-				if ( 20 > _mc.x ) {
+				if ( 0 >= _mc.x ) {
 					//効果音
 					createjs.Sound.play( "enemymove" );
-					//縦移動
-					_mc.parent.y += move_y_num;
+					//縦移動判定
+					_bool = true;
+					_mc.y += move_y_num;
 					//横反転
 					move_x_num = -1 * move_x_num;
 				};
 				//右端
-				if ( 300 < _mc.x  ) {
+				if ( 320 <= _mc.x  ) {
 					//効果音
 					createjs.Sound.play( "enemymove" );
-					//縦移動
-					_mc.parent.y += move_y_num;
+					//縦移動判定
+					_bool = true;
+					_mc.y += move_y_num;
 					//横反転
 					move_x_num = -1 * move_x_num;
 				};
@@ -1759,7 +1769,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1546920010304", id:"spacer"}
+		{src:"./images/spacer.png", id:"spacer"}
 	],
 	preloads: []
 };
