@@ -952,7 +952,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		var move_y_num = 40;
 		//残機判定用
 		var last_bool = false;
-		
 		//敵弾発射用乱数
 		var random_num = 0;
 		
@@ -965,11 +964,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//※ルートから参照用にプロパティに入れる
 		this.complete_bool = false;
 		
-		//エラー非表示
-		this.error_mc.visible = false;
-		
 		//リセット
 		this.reset_func = function() {
+			//エラー非表示
+			this.error_mc.visible = false;
 			//クリア判定オフ
 			this.complete_bool = false;
 			//残機判定用
@@ -988,6 +986,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					enemy_mc.x = ( ix * 40 ) + 40;
 					enemy_mc.y = ( iy * 40 ) + 30;
 					enemy_mc.name = "enemy_" + iy + "_" + ix + "_mc";
+					enemy_mc.visible = true;
 					this.enemy_set_mc.addChild( enemy_mc );
 					//ランダム計算
 					var y_num = Number( enemy_mc.name.split( "_" )[ 1 ] ) + 1;
@@ -1041,8 +1040,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						//タイマークリア
 						clearInterval( _mc.timer_id );
 						clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
-						//毎秒処理削除※敵弾個別
-						_mc.getChildByName( "ballet_mc" ).off( "tick", _mc.getChildByName( "ballet_mc" ).lis_obj );
 						//削除
 						this.enemy_set_mc.removeChild( _mc );
 					};
@@ -1111,7 +1108,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 								//タイマークリア
 								clearInterval( this.timer_id );
 								//弾に当たった敵を削除
-								this.parent.removeChild( this );
+								this.parent.removeChild( this );//※バグ対策必要
 							}, [], _mc );
 						};
 					};
@@ -1121,7 +1118,9 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _point;
 			};
 			//プレイヤーが敵の弾に当たる
-			//※思考中
+			/*
+			※思考中
+			*/
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
@@ -1219,17 +1218,22 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.ballet_tick_func = function( event_obj ) {
 			//対象取得
 			var _mc = event_obj.currentTarget;
+			//毎秒処理削除※敵弾個別
+			_mc.off( "tick", _mc.lis_obj );
 			//乱数発生
 			random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
+			console.log( random_num );
 			//タイマーセット
 			_mc.timer_id = setInterval( function() {
 				//効果音
 				createjs.Sound.play( "enemyballet" );
 				//乱数発生
 				random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
+				console.log( random_num );
 				//敵弾発射
-				_mc.ballet_bool = true;
+				_this.ballet_func();
 			}, ( random_num * 1000 ) );//間隔
+			/*
 			//敵弾位置
 			if ( _mc.ballet_bool == true ) {
 				//表示
@@ -1250,6 +1254,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
 				_mc.ballet_bool = false;
 			};
+			*/
 		};
 		
 		//弾発射
@@ -1266,12 +1271,28 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 		};
 		
+		//敵弾発射
+		this.ballet_func( event_obj ) {
+			//対象取得
+			var _mc = event_obj.currentTarget;
+			//弾発射中判定
+			if ( ballet_bool == true ) {
+				//効果音
+				createjs.Sound.play( "playerballetoff" );
+			} else if ( ballet_bool == false ) {
+				//効果音
+				createjs.Sound.play( "playerballeton" );
+				//判定オン
+				_mc.ballet_bool = true;
+			};
+		};
+		
 		//エラー表示
 		this.error_func = function() {
 			//効果音
 			createjs.Sound.play( "error" );
 			//オン
-			_this.error_mc.visible = true;
+			this.error_mc.visible = true;
 			//タイマー
 			setTimeout( function() {
 				//オフ
