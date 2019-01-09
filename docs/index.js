@@ -308,6 +308,19 @@ p.nominalBounds = new cjs.Rectangle(0,0,40,40);
 }).prototype = getMCSymbolPrototype(lib.level_1_text_mc, new cjs.Rectangle(-10.4,-18.7,20.9,37.5), null);
 
 
+(lib.hr_mc = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// g
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f("rgba(255,255,255,0.008)").s().dr(-160,-20,320,40);
+	this.shape.setTransform(160,20);
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.hr_mc, new cjs.Rectangle(0,0,320,40), null);
+
+
 (lib.hit_mc = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
@@ -966,6 +979,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			ball_num  = Number( _root.in_time_array[ _root.active_obj.level ] ) * 2;
 			//開始
 			this.start_func();
+			//縦位置再設定
+			this.enemy_set_mc.y = 0;
 			//ブロック作成
 			for ( var ix = 0;  ix < 7; ix++ ) {
 				for ( var iy = 0; iy < 3; iy++ ) {
@@ -1106,7 +1121,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				var _str = this.enemy_set_mc.children[ i ].name;
 				if ( _str != null ) {
 					var _mc = this.enemy_set_mc.getChildByName( _str );
-					if ( _mc.y >= 240 ) {
+					//敵個別が地面に当たる
+					var _point = _mc.localToLocal( 0, 0, this.hr_mc );
+					//衝突判定※敵個別
+					if ( this.hr_mc.hitTest( _point.x, _point.y ) ) {
 						//ライフ消滅
 						_root.active_obj.life = 0;
 						_root.life_mc.life_1_mc.visible = false;
@@ -1118,11 +1136,12 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						this.error_func();
 					};
 				};
+				//破棄
+				delete _mc;
+				delete _point;
 			};
-			//破棄
-			delete _mc;
 			//敵がなくなればゲームクリア
-			if ( this.enemy_set_mc.numChildren == 0 ) {
+			if ( this.enemy_set_mc.numChildren == 0 + 1 ) {
 				//クリア判定オン
 				this.complete_bool = true;
 				//停止
@@ -1130,7 +1149,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 			//敵が残り1機になったら速度アップ
 			if ( last_bool == false ) {
-				if ( this.enemy_set_mc.numChildren == 1 ) {
+				if ( this.enemy_set_mc.numChildren == 1 + 1 ) {
 					last_bool = true;
 					var _mc = this.enemy_set_mc.getChildAt( 0 );
 					clearInterval( _mc.timer_id );
@@ -1157,27 +1176,23 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				} else if ( _mc.currentFrame == 1 ) {
 					_mc.gotoAndStop( 0 );
 				};
-				//縦移動判定用
-				var _bool = false;
 				//横移動
 				_mc.x += move_x_num;
 				//左端
-				if ( 0 >= _mc.x ) {
+				if ( 20 >= _mc.x ) {
 					//効果音
 					createjs.Sound.play( "enemymove" );
-					//縦移動判定
-					_bool = true;
-					_mc.y += move_y_num;
+					//縦移動
+					_mc.parent.y += move_y_num;
 					//横反転
 					move_x_num = -1 * move_x_num;
 				};
 				//右端
-				if ( 320 <= _mc.x  ) {
+				if ( 300 <= _mc.x  ) {
 					//効果音
 					createjs.Sound.play( "enemymove" );
-					//縦移動判定
-					_bool = true;
-					_mc.y += move_y_num;
+					//縦移動
+					_mc.parent.y += move_y_num;
 					//横反転
 					move_x_num = -1 * move_x_num;
 				};
@@ -1288,10 +1303,22 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
+	// mask (mask)
+	var mask = new cjs.Shape();
+	mask._off = true;
+	mask.graphics.p("A4/2pMAx/AAAMAAAAtTMgx/AAAg");
+	mask.setTransform(160,145);
+
 	// enemy_set_mc
 	this.enemy_set_mc = new lib.enemy_set_mc();
 	this.enemy_set_mc.name = "enemy_set_mc";
 	this.enemy_set_mc.parent = this;
+
+	var maskedShapeInstanceList = [this.enemy_set_mc];
+
+	for(var shapedInstanceItr = 0; shapedInstanceItr < maskedShapeInstanceList.length; shapedInstanceItr++) {
+		maskedShapeInstanceList[shapedInstanceItr].mask = mask;
+	}
 
 	this.timeline.addTween(cjs.Tween.get(this.enemy_set_mc).wait(1));
 
@@ -1301,6 +1328,12 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	this.ball_mc.parent = this;
 	this.ball_mc.setTransform(160,252);
 
+	var maskedShapeInstanceList = [this.ball_mc];
+
+	for(var shapedInstanceItr = 0; shapedInstanceItr < maskedShapeInstanceList.length; shapedInstanceItr++) {
+		maskedShapeInstanceList[shapedInstanceItr].mask = mask;
+	}
+
 	this.timeline.addTween(cjs.Tween.get(this.ball_mc).wait(1));
 
 	// player_mc
@@ -1309,7 +1342,28 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	this.player_mc.parent = this;
 	this.player_mc.setTransform(160,250);
 
+	var maskedShapeInstanceList = [this.player_mc];
+
+	for(var shapedInstanceItr = 0; shapedInstanceItr < maskedShapeInstanceList.length; shapedInstanceItr++) {
+		maskedShapeInstanceList[shapedInstanceItr].mask = mask;
+	}
+
 	this.timeline.addTween(cjs.Tween.get(this.player_mc).wait(1));
+
+	// hr_mc
+	this.hr_mc = new lib.hr_mc();
+	this.hr_mc.name = "hr_mc";
+	this.hr_mc.parent = this;
+	this.hr_mc.setTransform(0,250);
+	this.hr_mc.cache(-2,-2,324,44);
+
+	var maskedShapeInstanceList = [this.hr_mc];
+
+	for(var shapedInstanceItr = 0; shapedInstanceItr < maskedShapeInstanceList.length; shapedInstanceItr++) {
+		maskedShapeInstanceList[shapedInstanceItr].mask = mask;
+	}
+
+	this.timeline.addTween(cjs.Tween.get(this.hr_mc).wait(1));
 
 	// error_mc
 	this.error_mc = new lib.error_mc();
