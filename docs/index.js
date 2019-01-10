@@ -1217,7 +1217,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//毎秒処理削除※敵弾個別
 			_mc.off( "tick", _mc.lis_obj );
 			//乱数発生
-			random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
+			random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
 			//タイマーセット
 			_mc.timer_id = setInterval( function() {
 				//効果音
@@ -1245,6 +1245,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//敵弾発射
 		this.ballet_func = function( _mc ) {
+			/*
 			//弾発射中判定
 			if ( _mc.ballet_bool == true ) {
 				//効果音
@@ -1255,6 +1256,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//判定オン
 				_mc.ballet_bool = true;
 			};
+			*/
 		};
 		
 		//エラー表示
