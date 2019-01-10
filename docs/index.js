@@ -1000,6 +1000,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					enemy_mc.timer_id = 0;
 					//毎秒処理追加※敵個別
 					enemy_mc.lis_obj = enemy_mc.on( "tick", this.enemy_tick_func, enemy_mc );
+					/*
 					//敵弾個別配置
 					var ballet_mc = new lib.ballet_mc();
 					ballet_mc.x = 0;
@@ -1013,6 +1014,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					ballet_mc.timer_id = 0;
 					//毎秒処理追加※敵弾個別
 					ballet_mc.lis_obj = ballet_mc.on( "tick", this.ballet_tick_func, ballet_mc );
+					*/
 				};
 			};
 			//毎秒処理追加※全体
@@ -1039,7 +1041,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						var _mc = this.enemy_set_mc.getChildByName( _str );
 						//タイマークリア
 						clearInterval( _mc.timer_id );
-						clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
+						//clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
 						//全部削除
 						this.enemy_set_mc.removeAllChildren();
 					};
@@ -1212,6 +1214,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//敵弾個別移動
 		this.ballet_tick_func = function( event_obj ) {
+			/*
 			//対象取得
 			var _mc = event_obj.currentTarget;
 			//毎秒処理削除※敵弾個別
@@ -1227,6 +1230,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//敵弾発射
 				_this.ballet_func( _mc );
 			}, ( random_num * 1000 ) );//間隔
+			*/
 		};
 		
 		//弾発射
@@ -1859,7 +1863,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547162554273", id:"spacer"}
 	],
 	preloads: []
 };
