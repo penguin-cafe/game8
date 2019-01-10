@@ -1084,6 +1084,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//判定オフ
 				ball_bool = false;
 			};
+			/*
 			//弾が敵全体に当たる
 			var _point = this.ball_mc.localToLocal( 0, 0, this.enemy_set_mc );
 			//衝突判定※敵全体
@@ -1171,6 +1172,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					};
 				};
 			};
+			*/
 		};
 		
 		//敵個別移動
