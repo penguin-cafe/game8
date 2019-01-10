@@ -966,7 +966,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//リセット
 		this.reset_func = function() {
-			//エラー非表示
+			//エラーオフ
 			this.error_mc.visible = false;
 			//クリア判定オフ
 			this.complete_bool = false;
@@ -1040,8 +1040,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						//タイマークリア
 						clearInterval( _mc.timer_id );
 						clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
-						//削除
-						this.enemy_set_mc.removeChild( _mc );
+						//リスナークリア
+						//敵
+						//敵弾
+						//全部削除
+						this.enemy_set_mc.removeAllChildren();
 					};
 				};
 			}, [], this );
@@ -1077,7 +1080,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				this.ball_mc.x = this.player_mc.x;
 				this.ball_mc.y = this.player_mc.y + 2;
 			};
-			//上の壁に当たる
+			//弾が上の壁に当たる
 			if ( this.ball_mc.y <= 0 ) {
 				//判定オフ
 				ball_bool = false;
@@ -1117,10 +1120,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
-			//プレイヤーが敵の弾に当たる
-			/*
-			※思考中
-			*/
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
@@ -1222,43 +1221,19 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			_mc.off( "tick", _mc.lis_obj );
 			//乱数発生
 			random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
-			console.log( random_num );
 			//タイマーセット
 			_mc.timer_id = setInterval( function() {
 				//効果音
 				createjs.Sound.play( "enemyballet" );
 				//乱数発生
 				random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
-				console.log( random_num );
 				//敵弾発射
-				_this.ballet_func();
+				_this.ballet_func( _mc );
 			}, ( random_num * 1000 ) );//間隔
-			/*
-			//敵弾位置
-			if ( _mc.ballet_bool == true ) {
-				//表示
-				_mc.visible = true;
-				//位置落下
-				_mc.y += ball_num;
-			};
-			if ( _mc.ballet_bool == false ) {
-				//非表示
-				_mc.visible = false;
-				//位置追従
-				_mc.x = 0;
-				_mc.y = 0;
-			};
-			//敵弾が地面に衝突したらリセットする
-			var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
-			//衝突判定※敵弾個別
-			if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
-				_mc.ballet_bool = false;
-			};
-			*/
 		};
 		
 		//弾発射
-		this.ball_func = function( event_obj ) {
+		this.ball_func = function() {
 			//弾発射中判定
 			if ( ball_bool == true ) {
 				//効果音
@@ -1272,14 +1247,12 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		};
 		
 		//敵弾発射
-		this.ballet_func( event_obj ) {
-			//対象取得
-			var _mc = event_obj.currentTarget;
+		this.ballet_func = function( _mc ) {
 			//弾発射中判定
-			if ( ballet_bool == true ) {
+			if ( _mc.ballet_bool == true ) {
 				//効果音
 				createjs.Sound.play( "playerballetoff" );
-			} else if ( ballet_bool == false ) {
+			} else if ( _mc.ballet_bool == false ) {
 				//効果音
 				createjs.Sound.play( "playerballeton" );
 				//判定オン
@@ -1291,11 +1264,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.error_func = function() {
 			//効果音
 			createjs.Sound.play( "error" );
-			//オン
+			//エラーオン
 			this.error_mc.visible = true;
 			//タイマー
 			setTimeout( function() {
-				//オフ
+				//エラーオフ
 				_this.error_mc.visible = false;
 				//一時停止オフ
 				pause_bool = false;
@@ -1338,6 +1311,30 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_root.life_mc[ "life_" + i + "_mc" ].visible = true;
 			};
 		};
+		/*
+		//敵弾位置
+		if ( _mc.ballet_bool == true ) {
+			//表示
+			_mc.visible = true;
+			//位置落下
+			_mc.y += ball_num;
+		};
+		if ( _mc.ballet_bool == false ) {
+			//非表示
+			_mc.visible = false;
+			//位置追従
+			_mc.x = 0;
+			_mc.y = 0;
+		};
+		//敵弾が地面に衝突したらリセットする
+		var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
+		//衝突判定※敵弾個別
+		if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
+			_mc.ballet_bool = false;
+		};
+		//プレイヤーが敵の弾に当たる
+		※思考中
+		*/
 	}
 
 	// actions tween:
