@@ -1040,9 +1040,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						//タイマークリア
 						clearInterval( _mc.timer_id );
 						clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
-						//リスナークリア
-						//敵
-						//敵弾
 						//全部削除
 						this.enemy_set_mc.removeAllChildren();
 					};
@@ -1220,13 +1217,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//毎秒処理削除※敵弾個別
 			_mc.off( "tick", _mc.lis_obj );
 			//乱数発生
-			random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
+			random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
 			//タイマーセット
 			_mc.timer_id = setInterval( function() {
 				//効果音
 				createjs.Sound.play( "enemyballet" );
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
+				random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
 				//敵弾発射
 				_this.ballet_func( _mc );
 			}, ( random_num * 1000 ) );//間隔
