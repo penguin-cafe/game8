@@ -1239,7 +1239,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//発射中判定オン
 				_mc.ballet_bool = true;
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
+				random_num = Math.floor( Math.random() * ( 10 + 1 ) ) + 5;
 				//タイマークリア
 				clearTimeout( _mc.ballet_id );
 				//タイマーセット
