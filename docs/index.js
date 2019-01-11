@@ -1060,48 +1060,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				return;
 			};
 			//弾移動
-			if ( ball_bool == true ) {
-				this.ball_mc.y -= ball_num;
-			};
-			if ( ball_bool == false ) {
-				this.ball_mc.x = this.player_mc.x;
-				this.ball_mc.y = this.player_mc.y + 2;
-			};
-			//弾が上の壁に当たる
-			if ( this.ball_mc.y <= 0 ) {
-				//判定オフ
-				ball_bool = false;
-			};
-			//弾が敵全体に当たる
-			var _point = this.ball_mc.localToLocal( 0, 0, this.enemy_set_mc );
-			//衝突判定※敵全体
-			if ( this.enemy_set_mc.hitTest( _point.x, _point.y ) ) {
-				//破棄
-				delete _point;
-				//敵全員チェック
-				for ( var i in this.enemy_set_mc.children ) {
-					var _str = this.enemy_set_mc.children[ i ].name;
-					if ( _str != null ) {
-						var _mc = this.enemy_set_mc.getChildByName( _str );
-						//弾が敵個別に当たる
-						var _point = this.ball_mc.localToLocal( 0, 0, _mc );
-						//衝突判定※敵個別
-						if ( _mc.hitTest( _point.x, _point.y ) ) {
-							//得点加算
-							this.score_func( "+" );
-							//判定オフ
-							ball_bool = false;
-							//爆発
-							_mc.gotoAndStop( 2 );
-							//敵個別削除
-							this.enemy_remove_func( _mc );
-						};
-					};
-				};
-				//破棄
-				delete _mc;
-				delete _point;
-			};
+			this.ball_move_func();
+			//敵全体衝突
+			this.enemy_hit_func();
+			//敵が残り1機になったら速度アップ
+			this.enemy_last_func();
 			//敵がなくなればゲームクリア
 			if ( this.enemy_set_mc.numChildren == 0 ) {
 				//クリア判定オン
@@ -1109,28 +1072,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//停止
 				this.stop_func();
 			};
-			//敵が残り1機になったら速度アップ
-			if ( last_bool == false ) {
-				if ( this.enemy_set_mc.numChildren == 1 ) {
-					//敵全員チェック
-					for ( var i in this.enemy_set_mc.children ) {
-						var _str = this.enemy_set_mc.children[ i ].name;
-						if ( _str != null ) {
-							var _mc = this.enemy_set_mc.getChildByName( _str );
-							//残機判定オン
-							last_bool = true;
-							//再設定
-							clearInterval( _mc.timer_id );
-							_mc.interval_num = 10;
-							_mc.lis_obj = _mc.on( "tick", this.enemy_tick_func, _mc );
-							//破棄
-							delete _mc;
-						};
-					};
-				};
-			};
 		};
-		
 		//敵個別移動
 		this.enemy_tick_func = function( event_obj ) {
 			//対象取得
@@ -1176,11 +1118,35 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				};
 			}, ( _mc.interval_num ) );//間隔
 		};
-		
-		//敵弾個別移動
-		this.ballet_tick_func = function( event_obj ) {
-		
+		//敵全体衝突
+		this.enemy_hit_func = function() {
+			//弾が敵全体に当たる
+			var _point = this.ball_mc.localToLocal( 0, 0, this.enemy_set_mc );
+			//衝突判定※敵全体
+			if ( this.enemy_set_mc.hitTest( _point.x, _point.y ) ) {
+				//敵全員チェック
+				for ( var i in this.enemy_set_mc.children ) {
+					var _str = this.enemy_set_mc.children[ i ].name;
+					if ( _str != null ) {
+						var _mc = this.enemy_set_mc.getChildByName( _str );
+						//弾が敵個別に当たる
+						var _point = this.ball_mc.localToLocal( 0, 0, _mc );
+						//衝突判定※敵個別
+						if ( _mc.hitTest( _point.x, _point.y ) ) {
+							//得点加算
+							this.score_func( "+" );
+							//判定オフ
+							ball_bool = false;
+							//爆発
+							_mc.gotoAndStop( 2 );
+							//敵個別削除
+							this.enemy_remove_func( _mc );
+						};
+					};
+				};
+			};
 		};
+		
 		//敵個別削除
 		this.enemy_remove_func = function( _mc ) {
 			//疑似タイマー
@@ -1197,8 +1163,29 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			}, [], _mc );
 		};
 		
+		//敵が残り1機になったら速度アップ
+		this.enemy_last_func = function() {
+			//残機判定オフなら
+			if ( last_bool == false ) {
+				if ( this.enemy_set_mc.numChildren == 1 ) {
+					//敵全員チェック
+					for ( var i in this.enemy_set_mc.children ) {
+						var _str = this.enemy_set_mc.children[ i ].name;
+						if ( _str != null ) {
+							var _mc = this.enemy_set_mc.getChildByName( _str );
+							//残機判定オン
+							last_bool = true;
+							//再設定
+							clearInterval( _mc.timer_id );
+							_mc.interval_num = 10;
+							_mc.lis_obj = _mc.on( "tick", this.enemy_tick_func, _mc );
+						};
+					};
+				};
+			};
+		};
 		//弾発射
-		this.ball_func = function() {
+		this.ball_fire_func = function() {
 			//弾発射中判定
 			if ( ball_bool == true ) {
 				//効果音
@@ -1211,11 +1198,32 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 		};
 		
+		//弾移動
+		this.ball_move_func = function() {
+			//落下
+			if ( ball_bool == true ) {
+				this.ball_mc.y -= ball_num;
+			};
+			//元に戻す
+			if ( ball_bool == false ) {
+				this.ball_mc.x = this.player_mc.x;
+				this.ball_mc.y = this.player_mc.y + 2;
+			};
+			//弾が上の壁に当たる
+			if ( this.ball_mc.y <= 0 ) {
+				//判定オフ
+				ball_bool = false;
+			};
+		};
 		//敵弾発射
-		this.ballet_func = function( _mc ) {
-		
+		this.ballet_fire_func = function( _mc ) {
+			//
 		};
 		
+		//敵弾移動
+		this.ballet_move_func = function( _mc ) {
+			//
+		};
 		//エラー表示
 		this.error_func = function() {
 			//効果音
@@ -1233,16 +1241,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			}, 500 );//継続時間
 		};
 		
-		//ゲームオーバー
-		this.gameover_func = function() {
-			//ライフ消滅
-			_root.active_obj.life = 0;
-			_root.life_mc.life_1_mc.visible = false;
-			_root.life_mc.life_2_mc.visible = false;
-			_root.life_mc.life_3_mc.visible = false;
-			//停止
-			this.stop_func();
-		};
 		//得点計算
 		this.score_func = function( _str ) {
 			//効果音
@@ -1276,6 +1274,17 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			for ( var i = 1; i <= _root.active_obj.life; i++ ) {
 				_root.life_mc[ "life_" + i + "_mc" ].visible = true;
 			};
+		};
+		
+		//ゲームオーバー
+		this.gameover_func = function() {
+			//ライフ消滅
+			_root.active_obj.life = 0;
+			_root.life_mc.life_1_mc.visible = false;
+			_root.life_mc.life_2_mc.visible = false;
+			_root.life_mc.life_3_mc.visible = false;
+			//停止
+			this.stop_func();
 		};
 		/*
 		//敵弾位置
@@ -1544,7 +1553,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//スペースボタン・スペースキー
 		function space_func() {
 			//弾発射
-			exportRoot.game_mc.ball_func();
+			exportRoot.game_mc.ball_fire_func();
 		};
 	}
 
