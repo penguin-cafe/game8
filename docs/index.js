@@ -1137,7 +1137,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//停止
 				stop_func();
 			};
-			/*
 			//敵が残り1機になったら速度アップ
 			if ( last_bool == false ) {
 				if ( this.enemy_set_mc.numChildren == 1 ) {
@@ -1158,7 +1157,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					};
 				};
 			};
-			*/
 		};
 		
 		//敵個別移動
@@ -1866,7 +1864,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1547178134271", id:"spacer"}
+		{src:"./images/spacer.png", id:"spacer"}
 	],
 	preloads: []
 };
