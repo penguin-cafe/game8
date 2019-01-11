@@ -1026,7 +1026,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						var _mc = this.enemy_set_mc.getChildByName( _str );
 						//タイマークリア
 						clearInterval( _mc.timer_id );
-						//clearInterval( _mc.getChildByName( "ballet_mc" ).timer_id );
 						//全部削除
 						this.enemy_set_mc.removeAllChildren();
 					};
@@ -1104,7 +1103,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
-			/*
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
@@ -1130,6 +1128,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
+			/*
 			//敵がなくなればゲームクリア
 			if ( this.enemy_set_mc.numChildren == 0 ) {
 				//クリア判定オン
@@ -1865,7 +1864,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547177999054", id:"spacer"}
 	],
 	preloads: []
 };
