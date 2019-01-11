@@ -966,10 +966,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//リセット
 		this.reset_func = function() {
-			//エラーオフ
-			this.error_mc.visible = false;
 			//クリア判定オフ
 			this.complete_bool = false;
+			//エラーオフ
+			this.error_mc.visible = false;
 			//残機判定用
 			last_bool = false;
 			//弾速度
@@ -979,23 +979,24 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//縦位置再設定
 			this.enemy_set_mc.y = 0;
 			//ブロック作成
-			for ( var ix = 0;  ix < 7; ix++ ) {
-				for ( var iy = 0; iy < 3; iy++ ) {
+			for ( var ix = 1;  ix <= 7; ix++ ) {
+				for ( var iy = 1; iy <= 3; iy++ ) {
 					//敵個別配置
 					var enemy_mc = new lib.enemy_y_x_mc();
-					enemy_mc.x = ( ix * 40 ) + 40;
-					enemy_mc.y = ( iy * 40 ) + 30;
+					enemy_mc.x = ( ix * 40 );
+					enemy_mc.y = ( iy * 40 );
 					enemy_mc.name = "enemy_" + iy + "_" + ix + "_mc";
-					enemy_mc.visible = true;
 					this.enemy_set_mc.addChild( enemy_mc );
 					//ランダム計算
-					var y_num = Number( enemy_mc.name.split( "_" )[ 1 ] ) + 1;
-					var x_num = Number( enemy_mc.name.split( "_" )[ 2 ] ) + 1;
+					var y_num = Number( enemy_mc.name.split( "_" )[ 1 ] );
+					var x_num = Number( enemy_mc.name.split( "_" )[ 2 ] );
 					var k_num = ( y_num * x_num ) * 10;
 					//移動間隔
 					enemy_mc.interval_num = ( 1000 / Number( _root.active_obj.level ) ) + k_num;
 					//フレーム移動
 					enemy_mc.gotoAndStop( 0 );
+					//死亡判定
+					enemy_mc.ded_bool = false;
 					//タイマー用ID
 					enemy_mc.timer_id = 0;
 					//毎秒処理追加※敵個別
@@ -1026,10 +1027,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						var _mc = this.enemy_set_mc.getChildByName( _str );
 						//タイマークリア
 						clearInterval( _mc.timer_id );
-						//全部削除
-						this.enemy_set_mc.removeAllChildren();
 					};
 				};
+				//削除
+				this.enemy_set_mc.removeAllChildren();
 			}, [], this );
 			//毎秒処理削除※全体
 			createjs.Ticker.off( "tick", lis_obj );
@@ -1047,6 +1048,22 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			if ( _root.active_obj.life <= 0 ) {
 				this.stop_func();
 			};
+		};
+		
+		//敵個別削除
+		this.enemy_remove_func = function( _mc ) {
+			//疑似タイマー
+			createjs.Tween.get( _mc ).wait( 500 ).call( function() {
+				//死亡判定オフなら
+				if ( _mc.ded_bool == false ) {
+					//死亡判定オン
+					_mc.ded_bool = true;
+					//タイマークリア
+					clearInterval( _mc.timer_id );
+					//弾に当たった敵を削除
+					_mc.parent.removeChild( _mc );
+				};
+			}, [], _mc );
 		};
 		
 		//毎秒処理定義
@@ -1089,13 +1106,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 							ball_bool = false;
 							//爆発
 							_mc.gotoAndStop( 2 );
-							//疑似タイマー
-							createjs.Tween.get( _mc ).wait( 500 ).call( function() {
-								//タイマークリア
-								clearInterval( this.timer_id );
-								//弾に当たった敵を削除
-								this.parent.removeChild( this );//※
-							}, [], _mc );
+							//敵個別削除
+							this.enemy_remove_func( _mc );
 						};
 					};
 				};
@@ -1111,11 +1123,9 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				if ( _str != null ) {
 					var _mc = this.enemy_set_mc.getChildByName( _str );
 					//敵個別が地面に当たる
-					var _point = _mc.localToLocal( 0, 0, this.player_mc );
-					console.log( _point );
-					
+					var _point = _mc.localToLocal( 0, 0, this.hr_mc );
 					//衝突判定※敵個別
-					if ( this.player_mc.hitTest( _point.x, _point.y ) ) {
+					if ( this.hr_mc.hitTest( _point.x, _point.y ) ) {
 						//ライフ消滅
 						_root.active_obj.life = 0;
 						_root.life_mc.life_1_mc.visible = false;
@@ -1126,7 +1136,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						//エラー表示
 						this.error_func();
 					};
-					
 				};
 				//破棄
 				delete _mc;
@@ -1867,7 +1876,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1547179496790", id:"spacer"}
+		{src:"./images/spacer.png", id:"spacer"}
 	],
 	preloads: []
 };
