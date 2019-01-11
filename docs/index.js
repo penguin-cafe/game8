@@ -1103,13 +1103,14 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
-			/*
+			
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
 				var _str = this.enemy_set_mc.children[ i ].name;
 				if ( _str != null ) {
 					var _mc = this.enemy_set_mc.getChildByName( _str );
+					/*
 					//敵個別が地面に当たる
 					var _point = _mc.localToLocal( 0, 0, this.hr_mc );
 					//衝突判定※敵個別
@@ -1124,12 +1125,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						//エラー表示
 						error_func();
 					};
+					*/
 				};
 				//破棄
 				delete _mc;
 				delete _point;
 			};
-			*/
+			
 			//敵がなくなればゲームクリア
 			if ( this.enemy_set_mc.numChildren == 0 ) {
 				//クリア判定オン
@@ -1864,7 +1866,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547178376109", id:"spacer"}
 	],
 	preloads: []
 };
