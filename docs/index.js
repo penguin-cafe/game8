@@ -1000,21 +1000,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					enemy_mc.timer_id = 0;
 					//毎秒処理追加※敵個別
 					enemy_mc.lis_obj = enemy_mc.on( "tick", enemy_tick_func, enemy_mc );
-					/*
-					//敵弾個別配置
-					var ballet_mc = new lib.ballet_mc();
-					ballet_mc.x = 0;
-					ballet_mc.y = 0;
-					ballet_mc.name = "ballet_mc";
-					ballet_mc.visible = false;
-					enemy_mc.addChild( ballet_mc );
-					//敵弾発射中判定用
-					ballet_mc.ballet_bool = false;
-					//タイマー用ID
-					ballet_mc.timer_id = 0;
-					//毎秒処理追加※敵弾個別
-					ballet_mc.lis_obj = ballet_mc.on( "tick", ballet_tick_func, ballet_mc );
-					*/
 				};
 			};
 			//毎秒処理追加※全体
@@ -1024,10 +1009,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//開始
 		this.start_func = function() {
 			//プレイヤー位置
-			_this.player_mc.x = 160;
+			this.player_mc.x = 160;
 			//ボール位置
-			_this.ball_mc.x = 160;
-			_this.ball_mc.y = 252;
+			this.ball_mc.x = 160;
+			this.ball_mc.y = 252;
 		};
 		
 		//停止
@@ -1084,7 +1069,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//判定オフ
 				ball_bool = false;
 			};
-			/*
 			//弾が敵全体に当たる
 			var _point = this.ball_mc.localToLocal( 0, 0, this.enemy_set_mc );
 			//衝突判定※敵全体
@@ -1107,12 +1091,12 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 							//爆発
 							_mc.gotoAndStop( 2 );
 							//疑似タイマー
-							setTimeout( function() {
+							createjs.Tween.get( _mc ).wait( 500 ).call( function() {
 								//タイマークリア
-								clearInterval( _mc.timer_id );
+								clearInterval( this.timer_id );
 								//弾に当たった敵を削除
-								_mc.parent.removeChild( _mc );//※バグ対策必要
-							}, 500 );
+								this.parent.removeChild( this );//※
+							}, [], _mc );
 						};
 					};
 				};
@@ -1120,6 +1104,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
+			/*
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
@@ -1339,6 +1324,21 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		};
 		//プレイヤーが敵の弾に当たる
 		※思考中
+		*/
+		/*
+		//敵弾個別配置
+		var ballet_mc = new lib.ballet_mc();
+		ballet_mc.x = 0;
+		ballet_mc.y = 0;
+		ballet_mc.name = "ballet_mc";
+		ballet_mc.visible = false;
+		enemy_mc.addChild( ballet_mc );
+		//敵弾発射中判定用
+		ballet_mc.ballet_bool = false;
+		//タイマー用ID
+		ballet_mc.timer_id = 0;
+		//毎秒処理追加※敵弾個別
+		ballet_mc.lis_obj = ballet_mc.on( "tick", ballet_tick_func, ballet_mc );
 		*/
 	}
 
