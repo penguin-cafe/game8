@@ -947,9 +947,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//※ルートから参照用にプロパティに入れる
 		this.complete_bool = false;
 		
-		//エラーオフ
-		this.error_mc.visible = false;
-		
 		//毎秒処理用
 		var lis_obj = null;
 		
@@ -964,7 +961,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//敵移動距離
 		var move_x_num = 4;
-		var move_y_num = 40;
+		var move_y_num = 20;
 		
 		//敵弾発射用乱数
 		var random_num = 0;
@@ -980,7 +977,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//残機判定用
 			last_bool = false;
 			//弾速度
-			ball_num  = Number( _root.in_time_array[ _root.active_obj.level ] ) * 2;
+			ball_num  = Number( _root.in_time_array[ _root.active_obj.level ] );
 			//開始
 			this.start_func();
 			//縦位置再設定
@@ -988,10 +985,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//ブロック作成
 			for ( var ix = 1;  ix <= 7; ix++ ) {
 				for ( var iy = 1; iy <= 3; iy++ ) {
-					//敵個別配置
+					//敵配置
 					var enemy_mc = new lib.enemy_y_x_mc();
-					enemy_mc.x = ( ix * 40 );
-					enemy_mc.y = ( iy * 40 );
+					enemy_mc.x = ( ix * 40 ) + 0;
+					enemy_mc.y = ( iy * 40 ) - 20;
 					enemy_mc.name = "enemy_" + iy + "_" + ix + "_mc";
 					this.enemy_set_mc.addChild( enemy_mc );
 					//ランダム計算
@@ -999,15 +996,18 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					var x_num = Number( enemy_mc.name.split( "_" )[ 2 ] );
 					var k_num = ( y_num * x_num ) * 10;
 					//移動間隔
-					enemy_mc.interval_num = ( 1000 / Number( _root.active_obj.level ) ) + k_num;
+					enemy_mc.interval_num = 1000 + k_num;
 					//フレーム移動
 					enemy_mc.gotoAndStop( 0 );
 					//死亡判定
 					enemy_mc.ded_bool = false;
 					//タイマー用ID
 					enemy_mc.timer_id = 0;
+					enemy_mc.ballet_id = 0;
 					//毎秒処理追加※敵個別
 					enemy_mc.lis_obj = enemy_mc.on( "tick", this.enemy_tick_func, enemy_mc );
+					//弾発射中判定用
+					enemy_mc.ballet_bool = false;
 				};
 			};
 			//毎秒処理追加※全体
@@ -1034,6 +1034,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 						var _mc = this.enemy_set_mc.getChildByName( _str );
 						//タイマークリア
 						clearInterval( _mc.timer_id );
+						clearInterval( _mc.ballet_id );
 					};
 				};
 				//削除
@@ -1056,7 +1057,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				this.stop_func();
 			};
 		};
-		//毎秒処理定義
+		//毎秒処理定義※全体
 		this.tick_func = function( event_obj ) {
 			//一時停止
 			if ( pause_bool == true ) {
@@ -1075,51 +1076,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//停止
 				this.stop_func();
 			};
-		};
-		//敵個別移動
-		this.enemy_tick_func = function( event_obj ) {
-			//対象取得
-			var _mc = event_obj.currentTarget;
-			//毎秒処理削除※敵個別
-			_mc.off( "tick", _mc.lis_obj );
-			//タイマークリア
-			clearInterval( _mc.timer_id );
-			//タイマーセット
-			_mc.timer_id = setInterval( function() {
-				//フレーム移動ループ
-				if ( _mc.currentFrame == 0 ) {
-					_mc.gotoAndStop( 1 );
-				} else if ( _mc.currentFrame == 1 ) {
-					_mc.gotoAndStop( 0 );
-				};
-				//横移動
-				_mc.x += move_x_num;
-				//左端
-				if ( 20 >= _mc.x ) {
-					//効果音
-					createjs.Sound.play( "enemymove" );
-					//縦移動
-					_mc.parent.y += move_y_num;
-					//横反転
-					move_x_num = -1 * move_x_num;
-				};
-				//右端
-				if ( 300 <= _mc.x  ) {
-					//効果音
-					createjs.Sound.play( "enemymove" );
-					//縦移動
-					_mc.parent.y += move_y_num;
-					//横反転
-					move_x_num = -1 * move_x_num;
-				};
-				//敵個別が地面に当たる
-				var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
-				//衝突判定※敵個別
-				if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
-					//ゲームオーバー
-					_this.gameover_func();
-				};
-			}, ( _mc.interval_num ) );//間隔
 		};
 		//敵全体衝突
 		this.enemy_hit_func = function() {
@@ -1160,6 +1116,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					_mc.ded_bool = true;
 					//タイマークリア
 					clearInterval( _mc.timer_id );
+					clearInterval( _mc.ballet_id );
 					//弾に当たった敵を削除
 					_mc.parent.removeChild( _mc );
 				};
@@ -1180,6 +1137,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 							last_bool = true;
 							//再設定
 							clearInterval( _mc.timer_id );
+							clearInterval( _mc.ballet_id );
 							_mc.interval_num = 10;
 							_mc.lis_obj = _mc.on( "tick", this.enemy_tick_func, _mc );
 						};
@@ -1187,47 +1145,155 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				};
 			};
 		};
+		//毎秒処理定義※敵個別
+		this.enemy_tick_func = function( event_obj ) {
+			//対象取得
+			var _mc = event_obj.currentTarget;
+			//毎秒処理削除※敵個別
+			_mc.off( "tick", _mc.lis_obj );
+			//タイマークリア
+			clearInterval( _mc.timer_id );
+			//タイマーセット
+			_mc.timer_id = setInterval( function() {
+				//敵移動
+				_this.enemy_move_func( _mc );
+				//敵個別が地面に当たる
+				var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
+				//衝突判定※敵個別
+				if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
+					//ゲームオーバー
+					_this.gameover_func();
+				};
+				//敵弾ランダム
+				_this.ballet_random_func( _mc );
+			}, ( _mc.interval_num ) );//間隔
+		};
+		//敵移動
+		this.enemy_move_func = function( _mc ) {
+			//フレーム移動ループ
+			if ( _mc.currentFrame == 0 ) {
+				_mc.gotoAndStop( 1 );
+			} else if ( _mc.currentFrame == 1 ) {
+				_mc.gotoAndStop( 0 );
+			};
+			//横移動
+			_mc.x += move_x_num;
+			//左端
+			if ( 20 >= _mc.x ) {
+				//効果音
+				createjs.Sound.play( "enemymove" );
+				//縦移動
+				_mc.parent.y += move_y_num;
+				//横反転
+				move_x_num = -1 * move_x_num;
+			};
+			//右端
+			if ( 300 <= _mc.x  ) {
+				//効果音
+				createjs.Sound.play( "enemymove" );
+				//縦移動
+				_mc.parent.y += move_y_num;
+				//横反転
+				move_x_num = -1 * move_x_num;
+			};
+		};
 		//弾発射
 		this.ball_fire_func = function() {
-			//弾発射中判定
+			//発射中判定オンなら
 			if ( ball_bool == true ) {
 				//効果音
 				createjs.Sound.play( "playerballetoff" );
-			} else if ( ball_bool == false ) {
+			};
+			//発射中判定オフなら
+			if ( ball_bool == false ) {
 				//効果音
 				createjs.Sound.play( "playerballeton" );
-				//判定オン
+				//発射中判定オン
 				ball_bool = true;
 			};
 		};
 		
 		//弾移動
 		this.ball_move_func = function() {
-			//落下
+			//発射中判定オンなら
 			if ( ball_bool == true ) {
+				//縦移動
 				this.ball_mc.y -= ball_num;
 			};
-			//元に戻す
+			//発射中判定オフなら
 			if ( ball_bool == false ) {
+				//元に戻す
 				this.ball_mc.x = this.player_mc.x;
 				this.ball_mc.y = this.player_mc.y + 2;
 			};
 			//弾が上の壁に当たる
 			if ( this.ball_mc.y <= 0 ) {
-				//判定オフ
+				//発射中判定オフ
 				ball_bool = false;
 			};
 		};
+		//敵弾ランダム
+		this.ballet_random_func = function( _mc ) {
+			//発射中判定オフなら
+			if ( _mc.ballet_bool == false ) {
+				//発射中判定オン
+				_mc.ballet_bool = true;
+				//乱数発生
+				random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
+				//タイマークリア
+				clearTimeout( _mc.ballet_id );
+				//タイマーセット
+				_mc.ballet_id = setTimeout( function() {
+					//敵弾発射
+					_this.ballet_fire_func( _mc );
+				}, ( random_num * 1000 ) );//間隔
+			};
+		};
+		
 		//敵弾発射
 		this.ballet_fire_func = function( _mc ) {
-			//
+			//効果音
+			createjs.Sound.play( "enemyballet" );
+			//敵弾生成
+			var ballet_mc = new lib.ballet_mc();
+			ballet_mc.x = _mc.x;
+			ballet_mc.y = _mc.y + this.enemy_set_mc.y + 20;
+			ballet_mc.name = _mc.name;
+			this.addChild( ballet_mc );
+			//毎秒処理追加※敵弾
+			ballet_mc.lis_obj = ballet_mc.on( "tick", this.ballet_tick_func, ballet_mc );
 		};
 		
 		//敵弾移動
-		this.ballet_move_func = function( _mc ) {
-			//
+		this.ballet_tick_func = function( event_obj ) {
+			//対象取得
+			var _mc = event_obj.currentTarget;
+			//縦移動
+			_mc.y += ball_num * 0.5;
+			//プレイヤーに当たれば
+			if ( true ) {
+				//衝突判定
+			};
+			//下まで行けば
+			if ( _mc.y >= _this.player_mc.y ) {
+				//対象取得
+				var target_mc = _this.enemy_set_mc.getChildByName( _mc.name );
+				if ( target_mc ) {
+					//発射中判定オフ
+					target_mc.ballet_bool = false;
+					//タイマークリア
+					clearTimeout( target_mc.ballet_id );
+				};
+				//毎秒処理削除※敵弾
+				_mc.off( "tick", _mc.lis_obj );
+				//敵弾削除
+				_this.removeChild( _mc );
+			};
 		};
-		//エラー表示
+		//エラーオフ
+		this.error_mc.visible = false;
+		
+		//エラーオン
 		this.error_func = function() {
 			//効果音
 			createjs.Sound.play( "error" );
@@ -1243,7 +1309,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_this.restart_func();
 			}, 500 );//継続時間
 		};
-		
 		//得点計算
 		this.score_func = function( _str ) {
 			//効果音
@@ -1289,74 +1354,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//停止
 			this.stop_func();
 		};
-		/*
-		//敵弾位置
-		if ( _mc.ballet_bool == true ) {
-			//表示
-			_mc.visible = true;
-			//位置落下
-			_mc.y += ball_num;
-		};
-		if ( _mc.ballet_bool == false ) {
-			//非表示
-			_mc.visible = false;
-			//位置追従
-			_mc.x = 0;
-			_mc.y = 0;
-		};
-		//敵弾が地面に衝突したらリセットする
-		var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
-		//衝突判定※敵弾個別
-		if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
-			_mc.ballet_bool = false;
-		};
-		//プレイヤーが敵の弾に当たる
-		※思考中
-		*/
-		/*
-		//敵弾個別配置
-		var ballet_mc = new lib.ballet_mc();
-		ballet_mc.x = 0;
-		ballet_mc.y = 0;
-		ballet_mc.name = "ballet_mc";
-		ballet_mc.visible = false;
-		enemy_mc.addChild( ballet_mc );
-		//敵弾発射中判定用
-		ballet_mc.ballet_bool = false;
-		//タイマー用ID
-		ballet_mc.timer_id = 0;
-		//毎秒処理追加※敵弾個別
-		ballet_mc.lis_obj = ballet_mc.on( "tick", ballet_tick_func, ballet_mc );
-		*/
-		/*
-		//対象取得
-		var _mc = event_obj.currentTarget;
-		//毎秒処理削除※敵弾個別
-		_mc.off( "tick", _mc.lis_obj );
-		//乱数発生
-		random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
-		//タイマーセット
-		_mc.timer_id = setInterval( function() {
-			//効果音
-			createjs.Sound.play( "enemyballet" );
-			//乱数発生
-			random_num = Math.floor( Math.random() * ( 15 + 1 ) ) + 5;
-			//敵弾発射
-			this.ballet_func( _mc );
-		}, ( random_num * 1000 ) );//間隔
-		*/
-		/*
-		//弾発射中判定
-		if ( _mc.ballet_bool == true ) {
-			//効果音
-			createjs.Sound.play( "playerballetoff" );
-		} else if ( _mc.ballet_bool == false ) {
-			//効果音
-			createjs.Sound.play( "playerballeton" );
-			//判定オン
-			_mc.ballet_bool = true;
-		};
-		*/
 	}
 
 	// actions tween:
@@ -1622,7 +1619,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//経過時間
 		this.play_time_num = 0;
 		//速度
-		this.in_time_array = [ 0, 2, 4, 6 ];
+		this.in_time_array = [ 0, 3, 4, 5 ];
 		
 		//メインループリスナー
 		this.roop_lis = null;
