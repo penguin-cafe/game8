@@ -947,6 +947,9 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//※ルートから参照用にプロパティに入れる
 		this.complete_bool = false;
 		
+		//エラーオフ
+		this.error_mc.visible = false;
+		
 		//毎秒処理用
 		var lis_obj = null;
 		
