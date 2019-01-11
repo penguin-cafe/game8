@@ -1103,6 +1103,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
+			/*
 			//敵が下まで来たらゲームオーバー
 			//敵全員チェック
 			for ( var i in this.enemy_set_mc.children ) {
@@ -1128,7 +1129,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				delete _mc;
 				delete _point;
 			};
-			/*
+			*/
 			//敵がなくなればゲームクリア
 			if ( this.enemy_set_mc.numChildren == 0 ) {
 				//クリア判定オン
@@ -1136,6 +1137,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//停止
 				stop_func();
 			};
+			/*
 			//敵が残り1機になったら速度アップ
 			if ( last_bool == false ) {
 				if ( this.enemy_set_mc.numChildren == 1 ) {
@@ -1864,7 +1866,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1547177999054", id:"spacer"}
+		{src:"./images/spacer.png?1547178134271", id:"spacer"}
 	],
 	preloads: []
 };
