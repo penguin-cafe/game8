@@ -171,6 +171,19 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 p.nominalBounds = new cjs.Rectangle(0,0,90,30);
 
 
+(lib.popup_back_mc = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// g
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f("#FFCC00").s().dr(-160,-195,320,390);
+	this.shape.setTransform(160,195);
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.popup_back_mc, new cjs.Rectangle(0,0,320,390), null);
+
+
 (lib.player_art_mc = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
@@ -666,55 +679,55 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	// t
 	this.shape = new cjs.Shape();
 	this.shape.graphics.f("#FF0000").s().p("AipCzIBLllIEIAAIgMA8Ii/AAIgRBRIC4AAIgMA7Ii5AAIgWBhIDPAAIgNA8g");
-	this.shape.setTransform(235.95,135.2);
+	this.shape.setTransform(235.95,95.2);
 
 	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f("#FF0000").s().p("AiiCzIBLllID6AAIgNA8IiwAAIgSBWICtAAIgNA7IisAAIggCYg");
-	this.shape_1.setTransform(206.575,135.2);
+	this.shape_1.graphics.f("#FF0000").s().p("AiiCzIBLllID6AAIgNA8IiwAAIgSBWICtAAIgNA6IisAAIggCZg");
+	this.shape_1.setTransform(206.575,95.2);
 
 	this.shape_2 = new cjs.Shape();
 	this.shape_2.graphics.f("#FF0000").s().p("AhJCzIBKllIBJAAIhKFlg");
-	this.shape_2.setTransform(185.625,135.2);
+	this.shape_2.setTransform(185.625,95.2);
 
 	this.shape_3 = new cjs.Shape();
 	this.shape_3.graphics.f("#FF0000").s().p("AiFCzIBLllIBIAAIg9EpIC1AAIgMA8g");
-	this.shape_3.setTransform(163.575,135.2);
+	this.shape_3.setTransform(163.575,95.2);
 
 	this.shape_4 = new cjs.Shape();
 	this.shape_4.graphics.f("#FF0000").s().p("AhvCiQgigWgOgiQgOghAAgjQAAgfAJgjQANgvAagiQAZgjAngUQAngUAwAAQBDAAApApQAoApAABEQAAA4gaA1QgbA1guAdQgtAcg5AAQgyAAgigXgAhChIQgiAyAAA7QAAAlAWAZQAXAZAkAAQAdAAAcgUQAbgUASgoQASgoAAgkQAAgrgXgYQgXgYgjAAQg1AAghAzg");
-	this.shape_4.setTransform(120.875,135.225);
+	this.shape_4.setTransform(120.875,95.225);
 
 	this.shape_5 = new cjs.Shape();
-	this.shape_5.graphics.f("#FF0000").s().p("AAkCzIhgjvIgyDvIhFAAIBLllIBFAAIBgDuIAyjuIBEAAIhKFlg");
-	this.shape_5.setTransform(85.2,135.2);
+	this.shape_5.graphics.f("#FF0000").s().p("AAkCzIhgjwIgyDwIhFAAIBLllIBFAAIBgDvIAyjvIBEAAIhKFlg");
+	this.shape_5.setTransform(85.2,95.2);
 
 	this.shape_6 = new cjs.Shape();
 	this.shape_6.graphics.f("#FF0000").s().p("AipCzIBKllIEJAAIgMA8Ii/AAIgRBRIC4AAIgMA7Ii5AAIgWBhIDPAAIgNA8g");
-	this.shape_6.setTransform(266.9,89.35);
+	this.shape_6.setTransform(266.9,49.35);
 
 	this.shape_7 = new cjs.Shape();
 	this.shape_7.graphics.f("#FF0000").s().p("Ah9CSQglgoAAhLQAAg8AZgzQAZgzAsgaQAsgbAyAAQA6AAAkAfQAkAfAHA2IhHAHQgGgggQgOQgRgOgcAAQgeAAgaATQgbASgQAoQgPAnAAAmQAAArAUAYQAVAXAfAAQAbAAAYgSQAYgTAMgkIBKALQgWA8grAgQgsAgg5AAQhCAAglgng");
-	this.shape_7.setTransform(234.775,89.375);
+	this.shape_7.setTransform(234.775,49.375);
 
 	this.shape_8 = new cjs.Shape();
-	this.shape_8.graphics.f("#FF0000").s().p("ABmCzIgNhPIiMAAIgrBPIhMAAIDJllIBSAAIA6FlgAgaApIBqAAIgViPg");
-	this.shape_8.setTransform(196.2,89.35);
+	this.shape_8.graphics.f("#FF0000").s().p("ABmCzIgNhPIiMAAIgrBPIhMAAIDJllIBSAAIA6FlgAgaAoIBqAAIgViPg");
+	this.shape_8.setTransform(196.2,49.35);
 
 	this.shape_9 = new cjs.Shape();
 	this.shape_9.graphics.f("#FF0000").s().p("AipCzIBKllIEJAAIgNA8Ii+AAIgRBRIC4AAIgMA7Ii4AAIgXBhIDPAAIgNA8g");
-	this.shape_9.setTransform(167.35,89.35);
+	this.shape_9.setTransform(167.35,49.35);
 
 	this.shape_10 = new cjs.Shape();
-	this.shape_10.graphics.f("#FF0000").s().p("AikCzIBKllICRAAQAnAAAWAJQAXAJANAWQANAUAAAeQAAAbgKAZQgLAbgPAOQgPAPgSAIQgRAIgeAEQgRACgvAAIgvAAIgdCJgAgygQIAXAAQA5AAAUgHQATgHALgRQAMgPAAgUQAAgNgGgIQgGgIgKgEQgLgEgkAAIgzAAg");
-	this.shape_10.setTransform(135.525,89.35);
+	this.shape_10.graphics.f("#FF0000").s().p("AikCzIBKllICRAAQAnAAAWAJQAXAKANAUQANAWAAAdQAAAbgKAaQgLAagPANQgPAQgSAIQgRAIgeAEQgRADgvAAIgvAAIgdCIgAgygQIAXAAQA5AAAUgHQATgIALgPQAMgRAAgTQAAgNgGgIQgGgIgKgEQgLgEgkAAIgzAAg");
+	this.shape_10.setTransform(135.525,49.35);
 
 	this.shape_11 = new cjs.Shape();
 	this.shape_11.graphics.f("#FF0000").s().p("AhvCiQgigWgOgiQgOghAAgjQAAgfAJgjQANgvAagiQAZgjAngUQAngUAwAAQBDAAApApQAoApAABEQAAA4gaA1QgbA1guAdQgtAcg5AAQgyAAgigXgAhChIQgiAyAAA7QAAAlAWAZQAXAZAkAAQAdAAAcgUQAbgUASgoQASgoAAgkQAAgrgXgYQgXgYgjAAQg1AAghAzg");
-	this.shape_11.setTransform(89.925,89.375);
+	this.shape_11.setTransform(89.925,49.375);
 
 	this.shape_12 = new cjs.Shape();
-	this.shape_12.graphics.f("#FF0000").s().p("AAkCzIhfjwIgzDwIhFAAIBLllIBFAAIBgDvIAyjvIBEAAIhKFlg");
-	this.shape_12.setTransform(54.25,89.35);
+	this.shape_12.graphics.f("#FF0000").s().p("AAkCzIhfjvIgzDvIhFAAIBLllIBFAAIBgDvIAyjvIBEAAIhKFlg");
+	this.shape_12.setTransform(54.25,49.35);
 
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape}]}).wait(1));
 
@@ -722,7 +735,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	this.game_complete_mc = new lib.game_complete_mc();
 	this.game_complete_mc.name = "game_complete_mc";
 	this.game_complete_mc.parent = this;
-	this.game_complete_mc.setTransform(60,20);
+	this.game_complete_mc.setTransform(60,140);
 	this.game_complete_mc.cache(-2,-2,204,26);
 
 	this.timeline.addTween(cjs.Tween.get(this.game_complete_mc).wait(1));
@@ -731,7 +744,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	this.game_over_mc = new lib.game_over_mc();
 	this.game_over_mc.name = "game_over_mc";
 	this.game_over_mc.parent = this;
-	this.game_over_mc.setTransform(60,20);
+	this.game_over_mc.setTransform(60,140);
 	this.game_over_mc.cache(-2,-2,204,26);
 
 	this.timeline.addTween(cjs.Tween.get(this.game_over_mc).wait(1));
@@ -840,12 +853,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 
 	this.timeline.addTween(cjs.Tween.get(this.play_btn).wait(1));
 
-	// area
-	this.shape_24 = new cjs.Shape();
-	this.shape_24.graphics.f("#FFCC00").s().p("A4/eeMAAAg87MAx/AAAMAAAA87g");
-	this.shape_24.setTransform(160,195);
+	// popup_back_mc
+	this.popup_back_mc = new lib.popup_back_mc();
+	this.popup_back_mc.name = "popup_back_mc";
+	this.popup_back_mc.parent = this;
+	this.popup_back_mc.cache(-2,-2,324,394);
 
-	this.timeline.addTween(cjs.Tween.get(this.shape_24).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.popup_back_mc).wait(1));
 
 }).prototype = getMCSymbolPrototype(lib.popup_mc, new cjs.Rectangle(0,0,320,390), null);
 
@@ -1004,10 +1018,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					//タイマー用ID
 					enemy_mc.timer_id = 0;
 					enemy_mc.ballet_id = 0;
-					//毎秒処理追加※敵個別
-					enemy_mc.lis_obj = enemy_mc.on( "tick", this.enemy_tick_func, enemy_mc );
 					//弾発射中判定用
 					enemy_mc.ballet_bool = false;
+					//毎秒処理追加※敵個別
+					enemy_mc.lis_obj = enemy_mc.on( "tick", this.enemy_tick_func, enemy_mc );
 				};
 			};
 			//毎秒処理追加※全体
@@ -1025,23 +1039,32 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//停止
 		this.stop_func = function() {
-			//疑似タイマー
-			createjs.Tween.get( this ).wait( 1000 ).call( function() {
-				//敵全員削除
-				for ( var i in this.enemy_set_mc.children ) {
-					var _str = this.enemy_set_mc.children[ i ].name;
-					if ( _str != null ) {
-						var _mc = this.enemy_set_mc.getChildByName( _str );
-						//タイマークリア
-						clearInterval( _mc.timer_id );
-						clearInterval( _mc.ballet_id );
+			//敵全員削除
+			for ( var i in this.enemy_set_mc.children ) {
+				var _str = this.enemy_set_mc.children[ i ].name;
+				if ( _str != null ) {
+					var _mc = this.enemy_set_mc.getChildByName( _str );
+					//タイマークリア
+					clearInterval( _mc.timer_id );
+					clearTimeout( _mc.ballet_id );
+					//弾発射中判定オフ
+					_mc.ballet_bool = false;
+					//対象取得
+					var target_mc = this.getChildByName( _mc.name );
+					if ( target_mc ) {
+						//毎秒処理削除※敵弾
+						target_mc.off( "tick", target_mc.lis_obj );
+						//敵弾削除
+						this.removeChild( target_mc );
 					};
 				};
-				//削除
-				this.enemy_set_mc.removeAllChildren();
-			}, [], this );
+			};
+			//削除
+			this.enemy_set_mc.removeAllChildren();
 			//毎秒処理削除※全体
 			createjs.Ticker.off( "tick", lis_obj );
+			//ゲーム開始
+			this.start_func();
 			//ゲーム終了
 			_root.game_stop_func();
 		};
@@ -1116,7 +1139,9 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					_mc.ded_bool = true;
 					//タイマークリア
 					clearInterval( _mc.timer_id );
-					clearInterval( _mc.ballet_id );
+					clearTimeout( _mc.ballet_id );
+					//弾発射中判定オフ
+					_mc.ballet_bool = false;
 					//弾に当たった敵を削除
 					_mc.parent.removeChild( _mc );
 				};
@@ -1137,7 +1162,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 							last_bool = true;
 							//再設定
 							clearInterval( _mc.timer_id );
-							clearInterval( _mc.ballet_id );
+							clearTimeout( _mc.ballet_id );
+							_mc.ballet_bool = false;
 							_mc.interval_num = 10;
 							_mc.lis_obj = _mc.on( "tick", this.enemy_tick_func, _mc );
 						};
@@ -1157,6 +1183,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			_mc.timer_id = setInterval( function() {
 				//敵移動
 				_this.enemy_move_func( _mc );
+				//敵弾ランダム
+				_this.ballet_random_func( _mc );
 				//敵個別が地面に当たる
 				var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
 				//衝突判定※敵個別
@@ -1164,8 +1192,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					//ゲームオーバー
 					_this.gameover_func();
 				};
-				//敵弾ランダム
-				_this.ballet_random_func( _mc );
 			}, ( _mc.interval_num ) );//間隔
 		};
 		//敵移動
@@ -1243,7 +1269,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//発射中判定オン
 				_mc.ballet_bool = true;
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 10 + 1 ) ) + 5;
+				random_num = Math.floor( Math.random() * ( 6 + 1 ) ) + 2;
 				//タイマークリア
 				clearTimeout( _mc.ballet_id );
 				//タイマーセット
@@ -1258,6 +1284,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.ballet_fire_func = function( _mc ) {
 			//一時停止
 			if ( pause_bool == true ) {
+				//タイマークリア
+				clearTimeout( _mc.ballet_id );
+				//発射中判定オフ
+				_mc.ballet_bool = false;
 				return;
 			};
 			//効果音
@@ -1274,12 +1304,20 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//敵弾移動
 		this.ballet_tick_func = function( event_obj ) {
-			//一時停止
-			if ( pause_bool == true ) {
-				return;
-			};
 			//対象取得
 			var _mc = event_obj.currentTarget;
+			//一時停止
+			if ( pause_bool == true ) {
+				//タイマークリア
+				clearTimeout( _mc.ballet_id );
+				//弾発射中判定オフ
+				_mc.ballet_bool = false;
+				//毎秒処理削除※敵弾
+				_mc.off( "tick", _mc.lis_obj );
+				//敵弾削除
+				_this.removeChild( _mc );
+				return;
+			};
 			//縦移動
 			_mc.y += ball_num * 0.5;
 			//敵弾がプレイヤーに当たる
@@ -1303,10 +1341,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//対象取得
 			var target_mc = _this.enemy_set_mc.getChildByName( _mc.name );
 			if ( target_mc ) {
-				//発射中判定オフ
-				target_mc.ballet_bool = false;
 				//タイマークリア
 				clearTimeout( target_mc.ballet_id );
+				//発射中判定オフ
+				target_mc.ballet_bool = false;
 			};
 			//毎秒処理削除※敵弾
 			_mc.off( "tick", _mc.lis_obj );
@@ -1320,21 +1358,30 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.error_func = function() {
 			//効果音
 			createjs.Sound.play( "error" );
+			//ライフ減点
+			this.life_func( "-" );
 			//一時停止オン
 			pause_bool = true;
 			//エラーオン
 			this.error_mc.visible = true;
+			//継続時間
+			var _num = 1000 * 1;
+			if ( _root.active_obj.life == 0 ) {
+				_num = 1000 * 3;
+				//効果音
+				createjs.Sound.play( "booboo", "INTERRUPT_NONE", 1000, 0, 0, 1,0 );
+				createjs.Sound.play( "booboo", "INTERRUPT_NONE", 1500, 0, 0, 1, 0 );
+				createjs.Sound.play( "booboo", "INTERRUPT_NONE", 2000, 0, 0, 1, 0 );
+			};
 			//タイマー
 			setTimeout( function() {
 				//一時停止オフ
 				pause_bool = false;
 				//エラーオフ
 				_this.error_mc.visible = false;
-				//ライフ減点
-				_this.life_func( "-" );
 				//再開
 				_this.restart_func();
-			}, 1000 );//継続時間
+			}, _num );//継続時間
 		};
 		//得点計算
 		this.score_func = function( _str ) {
@@ -1653,6 +1700,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//効果音設定
 		createjs.Sound.registerSound( "sounds/bgm.mp3", "bgm" );
+		createjs.Sound.registerSound( "sounds/booboo.mp3", "booboo" );
 		createjs.Sound.registerSound( "sounds/enemyballet.mp3", "enemyballet" );
 		createjs.Sound.registerSound( "sounds/enemymove.mp3", "enemymove" );
 		createjs.Sound.registerSound( "sounds/error.mp3", "error" );
@@ -1735,7 +1783,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		//ゲーム開始
 		this.game_start_func = function() {
 			//ポップアップ非表示
-			createjs.Tween.get( this.popup_mc ).to( { alpha : 0.0 }, 500, createjs.Ease.linear ).call( function() {
+			createjs.Tween.get( this.popup_mc ).to( { alpha : 0.0 }, 1000, createjs.Ease.linear ).call( function() {
 				this.visible = false;
 				//開始時間
 				root.start_time_num = new Date();
@@ -1756,7 +1804,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			createjs.Ticker.off( "tick", root.roop_lis );
 			//ポップアップ表示
 			this.popup_mc.visible = true;
-			createjs.Tween.get( this.popup_mc ).to( { alpha : 1.0 }, 500, createjs.Ease.linear ).call( function() {
+			createjs.Tween.get( this.popup_mc ).to( { alpha : 1.0 }, 1000, createjs.Ease.linear ).call( function() {
 				//ゲーム結果判定
 				if ( root.game_mc.complete_bool == true ) {
 					root.popup_mc.game_complete_mc.visible = true;
