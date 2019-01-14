@@ -1248,7 +1248,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//発射中判定オンなら
 			if ( ball_bool == true ) {
 				//縦移動
-				this.ball_mc.y -= ball_num;
+				this.ball_mc.y -= ball_num * 1.0;
 			};
 			//発射中判定オフなら
 			if ( ball_bool == false ) {
@@ -1269,7 +1269,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//発射中判定オン
 				_mc.ballet_bool = true;
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 6 + 1 ) ) + 2;
+				random_num = Math.floor( Math.random() * ( 12 + 1 ) ) + 6;
 				//タイマークリア
 				clearTimeout( _mc.ballet_id );
 				//タイマーセット
@@ -1319,7 +1319,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				return;
 			};
 			//縦移動
-			_mc.y += ball_num * 0.5;
+			_mc.y += ball_num * 1.0;
 			//敵弾がプレイヤーに当たる
 			var _point = _mc.localToLocal( 0, 0, _this.player_mc );
 			//衝突判定※敵弾
