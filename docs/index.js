@@ -997,8 +997,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//縦位置再設定
 			this.enemy_set_mc.y = 0;
 			//ブロック作成
-			for ( var ix = 1;  ix <= 7; ix++ ) {
-				for ( var iy = 1; iy <= 3; iy++ ) {
+			for ( var ix = 1;  ix <= 2; ix++ ) {
+				for ( var iy = 1; iy <= 1; iy++ ) {
 					//敵配置
 					var enemy_mc = new lib.enemy_y_x_mc();
 					enemy_mc.x = ( ix * 40 ) + 0;
@@ -1039,6 +1039,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//停止
 		this.stop_func = function() {
+			//毎秒処理削除※全体
+			createjs.Ticker.off( "tick", lis_obj );
 			//敵全員削除
 			for ( var i in this.enemy_set_mc.children ) {
 				var _str = this.enemy_set_mc.children[ i ].name;
@@ -1061,8 +1063,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 			//削除
 			this.enemy_set_mc.removeAllChildren();
-			//毎秒処理削除※全体
-			createjs.Ticker.off( "tick", lis_obj );
+			//クリア判定オンオフ
+			console.log( _root.active_obj.life );
+			if ( _root.active_obj.life >= 1 ) {
+				this.complete_bool = true;
+			} else if ( _root.active_obj.life <= 0 ) {
+				this.complete_bool = false;
+			};
 			//ゲーム開始
 			this.start_func();
 			//ゲーム終了
@@ -1122,30 +1129,25 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		//敵個別削除
 		this.enemy_remove_func = function( _mc ) {
-			//疑似タイマー
-			createjs.Tween.get( _mc ).wait( 500 ).call( function() {
-				//死亡判定オフなら
-				if ( _mc.ded_bool == false ) {
-					//死亡判定オン
-					_mc.ded_bool = true;
-					//タイマークリア
-					clearInterval( _mc.timer_id );
-					clearTimeout( _mc.ballet_id );
-					//弾発射中判定オフ
-					_mc.ballet_bool = false;
-					//弾に当たった敵を削除
-					_mc.parent.removeChild( _mc );
-					//敵が残り1機になったら速度アップ
-					_this.enemy_last_func();
-					//敵がなくなればゲームクリア
-					if ( _this.enemy_set_mc.numChildren == 0 ) {
-						//クリア判定オン
-						_this.complete_bool = true;
-						//停止
-						_this.stop_func();
-					};
+			//死亡判定オフなら
+			if ( _mc.ded_bool == false ) {
+				//死亡判定オン
+				_mc.ded_bool = true;
+				//タイマークリア
+				clearInterval( _mc.timer_id );
+				clearTimeout( _mc.ballet_id );
+				//弾発射中判定オフ
+				_mc.ballet_bool = false;
+				//弾に当たった敵を削除
+				_mc.parent.removeChild( _mc );
+				//敵が残り1機になったら速度アップ
+				_this.enemy_last_func();
+				//敵がなくなればゲームクリア
+				if ( _this.enemy_set_mc.numChildren == 0 ) {
+					//停止
+					_this.stop_func();
 				};
-			}, [], _mc );
+			};
 		};
 		
 		//敵が残り1機になったら速度アップ
@@ -1420,16 +1422,10 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			for ( var i = 1; i <= _root.active_obj.life; i++ ) {
 				_root.life_mc[ "life_" + i + "_mc" ].visible = true;
 			};
-			//クリア判定オフ
-			if ( _root.active_obj.life == 0 ) {
-				this.complete_bool = false;
-			};
 		};
 		
 		//ゲームオーバー
 		this.gameover_func = function() {
-			//クリア判定オフ
-			this.complete_bool = false;
 			//ライフ消滅
 			_root.active_obj.life = 0;
 			_root.life_mc.life_1_mc.visible = false;
@@ -1816,11 +1812,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			this.popup_mc.visible = true;
 			createjs.Tween.get( this.popup_mc ).to( { alpha : 1.0 }, 1000, createjs.Ease.linear ).call( function() {
 				//ゲーム結果判定
+				root.popup_mc.game_complete_mc.visible = false;
+				root.popup_mc.game_over_mc.visible = false;
 				if ( root.game_mc.complete_bool == true ) {
 					root.popup_mc.game_complete_mc.visible = true;
-					root.popup_mc.game_over_mc.visible = false;
 				} else if ( root.game_mc.complete_bool == false ) {
-					root.popup_mc.game_complete_mc.visible = false;
 					root.popup_mc.game_over_mc.visible = true;
 				};
 				//効果音
