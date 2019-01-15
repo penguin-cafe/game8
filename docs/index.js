@@ -189,12 +189,12 @@ p.nominalBounds = new cjs.Rectangle(0,0,90,30);
 
 	// g
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f("#FF0000").s().p("AjHB4IAAiEIAaAAIAAgdIB6AAIAAgwIAjAAIAAgeIAhAAIAAAeIAkAAIAAAwIB5AAIAAAdIAaAAIAACEg");
+	this.shape.graphics.f("#FF0000").s().p("AiVB4IAAiEIAcAAIAAgdIBCAAIAAgwIAlAAIAAgeIAlAAIAAAeIAmAAIAAAwIBBAAIAAAdIAcAAIAACEg");
 	this.shape.setTransform(0,12);
 
 	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
 
-}).prototype = getMCSymbolPrototype(lib.player_art_mc, new cjs.Rectangle(-20,0,40,24), null);
+}).prototype = getMCSymbolPrototype(lib.player_art_mc, new cjs.Rectangle(-15,0,30,24), null);
 
 
 (lib.play_btn = function(mode,startPosition,loop) {
@@ -871,11 +871,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	this.player_art_mc = new lib.player_art_mc();
 	this.player_art_mc.name = "player_art_mc";
 	this.player_art_mc.parent = this;
-	this.player_art_mc.cache(-22,-2,44,28);
+	this.player_art_mc.cache(-17,-2,34,28);
 
 	this.timeline.addTween(cjs.Tween.get(this.player_art_mc).wait(1));
 
-}).prototype = getMCSymbolPrototype(lib.player_mc, new cjs.Rectangle(-20,0,40,24), null);
+}).prototype = getMCSymbolPrototype(lib.player_mc, new cjs.Rectangle(-15,0,30,24), null);
 
 
 (lib.life_mc = function(mode,startPosition,loop) {
@@ -974,7 +974,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		var ball_num = 0;
 		
 		//敵移動距離
-		var move_x_num = 4;
+		var move_x_num = 3;
 		var move_y_num = 20;
 		
 		//敵弾発射用乱数
@@ -1319,7 +1319,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				return;
 			};
 			//縦移動
-			_mc.y += ball_num * 1.0;
+			_mc.y += ball_num * 0.5;
 			//下まで行けば
 			if ( _mc.y >= 260 ) {
 				//敵弾衝突
@@ -1420,10 +1420,16 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			for ( var i = 1; i <= _root.active_obj.life; i++ ) {
 				_root.life_mc[ "life_" + i + "_mc" ].visible = true;
 			};
+			//クリア判定オフ
+			if ( _root.active_obj.life == 0 ) {
+				this.complete_bool = false;
+			};
 		};
 		
 		//ゲームオーバー
 		this.gameover_func = function() {
+			//クリア判定オフ
+			this.complete_bool = false;
 			//ライフ消滅
 			_root.active_obj.life = 0;
 			_root.life_mc.life_1_mc.visible = false;
@@ -1582,7 +1588,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			press_id = setInterval( function() {
 				//移動
 				move_func( _str );
-			}, 40 );//間隔
+			}, 10 );//間隔
 		};
 		
 		//プレスアップ
@@ -1617,13 +1623,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			if ( _str == "L" ) {
 				//制限値
 				if ( target_mc.x > 30 ) {
-					target_mc.x -= 4;//距離
+					target_mc.x -= 3;//距離
 				};
 			//右
 			} else if ( _str == "R" ) {
 				//制限値
 				if ( target_mc.x < 290 ) {
-					target_mc.x += 4;//距離
+					target_mc.x += 3;//距離
 				};
 			};
 		};
@@ -1958,7 +1964,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1547546900249", id:"spacer"}
+		{src:"./images/spacer.png", id:"spacer"}
 	],
 	preloads: []
 };
