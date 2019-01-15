@@ -1958,7 +1958,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547546900249", id:"spacer"}
 	],
 	preloads: []
 };
