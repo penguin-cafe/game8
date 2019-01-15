@@ -998,7 +998,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			this.enemy_set_mc.y = 0;
 			//ブロック作成
 			for ( var ix = 1;  ix <= 7; ix++ ) {
-				for ( var iy = 1; iy <= 3; iy++ ) {
+				for ( var iy = 1; iy <= 2; iy++ ) {
 					//敵配置
 					var enemy_mc = new lib.enemy_y_x_mc();
 					enemy_mc.x = ( ix * 40 ) + 0;
@@ -1320,6 +1320,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 			//縦移動
 			_mc.y += ball_num * 1.0;
+			
 			//敵弾がプレイヤーに当たる
 			var _point = _mc.localToLocal( 0, 0, _this.player_mc );
 			//衝突判定※敵弾
@@ -1329,6 +1330,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//エラー
 				_this.error_func();
 			};
+			
 			//下まで行けば
 			if ( _mc.y >= 260 ) {
 				//敵弾削除
