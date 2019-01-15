@@ -1306,7 +1306,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.ballet_tick_func = function( event_obj ) {
 			//対象取得
 			var _mc = event_obj.currentTarget;
-			/*
 			//一時停止
 			if ( pause_bool == true ) {
 				//タイマークリア
@@ -1319,10 +1318,9 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_this.removeChild( _mc );
 				return;
 			};
-			*/
 			//縦移動
 			_mc.y += ball_num * 1.0;
-			
+			/*
 			//敵弾がプレイヤーに当たる
 			var _point = _mc.localToLocal( 0, 0, _this.player_mc );
 			//衝突判定※敵弾
@@ -1332,7 +1330,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//エラー
 				_this.error_func();
 			};
-			
+			*/
 			//下まで行けば
 			if ( _mc.y >= 260 ) {
 				//敵弾削除
