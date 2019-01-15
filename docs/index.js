@@ -1140,13 +1140,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_mc.ballet_bool = false;
 				//弾に当たった敵を削除
 				_mc.parent.removeChild( _mc );
+				//敵が残り1機になったら速度アップ
+				_this.enemy_last_func();
 				//敵がなくなればゲームクリア
 				if ( _this.enemy_set_mc.numChildren == 0 ) {
 					//停止
 					_this.stop_func();
 				};
-				//敵が残り1機になったら速度アップ
-				_this.enemy_last_func();
 			};
 		};
 		
@@ -1187,6 +1187,13 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_this.enemy_move_func( _mc );
 				//敵弾ランダム
 				_this.ballet_random_func( _mc );
+				//敵個別が地面に当たる
+				var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
+				//衝突判定※敵個別
+				if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
+					//ゲームオーバー
+					_this.gameover_func();
+				};
 			}, ( _mc.interval_num ) );//間隔
 		};
 		//敵移動
@@ -1220,13 +1227,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_mc.parent.y += move_y_num;
 				//横反転
 				move_x_num = -1 * move_x_num;
-			};
-			//敵個別が地面に当たる
-			var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
-			//衝突判定※敵個別
-			if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
-				//ゲームオーバー
-				_this.gameover_func();
 			};
 		};
 		//弾発射
@@ -1431,8 +1431,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			_root.life_mc.life_1_mc.visible = false;
 			_root.life_mc.life_2_mc.visible = false;
 			_root.life_mc.life_3_mc.visible = false;
-			//停止
-			this.stop_func();
 		};
 	}
 
