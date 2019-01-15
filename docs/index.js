@@ -1142,11 +1142,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_mc.parent.removeChild( _mc );
 				//敵が残り1機になったら速度アップ
 				_this.enemy_last_func();
-				//敵がなくなればゲームクリア
-				if ( _this.enemy_set_mc.numChildren == 0 ) {
-					//停止
-					_this.stop_func();
-				};
 			};
 		};
 		
@@ -1187,12 +1182,20 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_this.enemy_move_func( _mc );
 				//敵弾ランダム
 				_this.ballet_random_func( _mc );
+				//敵がなくなればゲームクリア
+				if ( _this.enemy_set_mc.numChildren == 0 ) {
+					console.log(_this);
+					//停止
+					_this.stop_func();
+					return;
+				};
 				//敵個別が地面に当たる
 				var _point = _mc.localToLocal( 0, 0, _this.hr_mc );
 				//衝突判定※敵個別
 				if ( _this.hr_mc.hitTest( _point.x, _point.y ) ) {
 					//ゲームオーバー
 					_this.gameover_func();
+					//return;
 				};
 			}, ( _mc.interval_num ) );//間隔
 		};
@@ -1960,7 +1963,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547560409070", id:"spacer"}
 	],
 	preloads: []
 };
