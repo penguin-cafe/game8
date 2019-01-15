@@ -998,7 +998,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			this.enemy_set_mc.y = 0;
 			//ブロック作成
 			for ( var ix = 1;  ix <= 7; ix++ ) {
-				for ( var iy = 1; iy <= 2; iy++ ) {
+				for ( var iy = 1; iy <= 3; iy++ ) {
 					//敵配置
 					var enemy_mc = new lib.enemy_y_x_mc();
 					enemy_mc.x = ( ix * 40 ) + 0;
@@ -1090,15 +1090,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			this.ball_move_func();
 			//敵全体衝突
 			this.enemy_hit_func();
-			//敵が残り1機になったら速度アップ
-			this.enemy_last_func();
-			//敵がなくなればゲームクリア
-			if ( this.enemy_set_mc.numChildren == 0 ) {
-				//クリア判定オン
-				this.complete_bool = true;
-				//停止
-				this.stop_func();
-			};
 		};
 		//敵全体衝突
 		this.enemy_hit_func = function() {
@@ -1144,6 +1135,15 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 					_mc.ballet_bool = false;
 					//弾に当たった敵を削除
 					_mc.parent.removeChild( _mc );
+					//敵が残り1機になったら速度アップ
+					_this.enemy_last_func();
+					//敵がなくなればゲームクリア
+					if ( _this.enemy_set_mc.numChildren == 0 ) {
+						//クリア判定オン
+						_this.complete_bool = true;
+						//停止
+						_this.stop_func();
+					};
 				};
 			}, [], _mc );
 		};
