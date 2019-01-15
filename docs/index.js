@@ -1269,7 +1269,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//発射中判定オン
 				_mc.ballet_bool = true;
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 27 + 1 ) ) + 3;
+				random_num = Math.floor( Math.random() * ( 5 + 1 ) ) + 5;
 				//タイマークリア
 				clearTimeout( _mc.ballet_id );
 				//タイマーセット
@@ -1306,6 +1306,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		this.ballet_tick_func = function( event_obj ) {
 			//対象取得
 			var _mc = event_obj.currentTarget;
+			/*
 			//一時停止
 			if ( pause_bool == true ) {
 				//タイマークリア
@@ -1318,6 +1319,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				_this.removeChild( _mc );
 				return;
 			};
+			*/
 			//縦移動
 			_mc.y += ball_num * 1.0;
 			
