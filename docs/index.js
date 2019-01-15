@@ -1269,7 +1269,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 				//発射中判定オン
 				_mc.ballet_bool = true;
 				//乱数発生
-				random_num = Math.floor( Math.random() * ( 21 + 1 ) ) + 3;
+				random_num = Math.floor( Math.random() * ( 27 + 1 ) ) + 3;
 				//タイマークリア
 				clearTimeout( _mc.ballet_id );
 				//タイマーセット
@@ -1956,7 +1956,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png", id:"spacer"}
+		{src:"./images/spacer.png?1547524391616", id:"spacer"}
 	],
 	preloads: []
 };
