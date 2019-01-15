@@ -1320,22 +1320,24 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			};
 			//縦移動
 			_mc.y += ball_num * 1.0;
-			/*
-			//敵弾がプレイヤーに当たる
-			var _point = _mc.localToLocal( 0, 0, _this.player_mc );
-			//衝突判定※敵弾
-			if ( _this.player_mc.hitTest( _point.x, _point.y ) ) {
-				//敵弾削除
-				_this.ballet_remove_func( _mc );
-				//エラー
-				_this.error_func();
-			};
-			*/
 			//下まで行けば
 			if ( _mc.y >= 260 ) {
-				//敵弾削除
-				_this.ballet_remove_func( _mc );
+				//敵弾衝突
+				_this.ballet_hit_func( _mc );
 			};
+		};
+		
+		//敵弾衝突
+		this.ballet_hit_func = function( _mc ) {
+			//敵弾がプレイヤーに当たる
+			var _point = _mc.localToLocal( 0, 0, this.player_mc );
+			//衝突判定※敵弾
+			if ( this.player_mc.hitTest( _point.x, _point.y ) ) {
+				//エラー
+				this.error_func();
+			};
+			//敵弾削除
+			this.ballet_remove_func( _mc );
 		};
 		
 		//敵弾削除
