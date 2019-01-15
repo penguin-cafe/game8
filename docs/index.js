@@ -1326,7 +1326,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			//衝突判定※敵弾
 			if ( _this.player_mc.hitTest( _point.x, _point.y ) ) {
 				//敵弾削除
-				_this.ballet_remove_func( _mc );
+				//_this.ballet_remove_func( _mc );
 				//エラー
 				_this.error_func();
 			};
@@ -1956,7 +1956,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"./images/spacer.png?1547524391616", id:"spacer"}
+		{src:"./images/spacer.png?1547524538623", id:"spacer"}
 	],
 	preloads: []
 };
